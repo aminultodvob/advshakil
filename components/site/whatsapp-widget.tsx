@@ -2,11 +2,17 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export function WhatsAppWidget() {
+  const pathname = usePathname();
   const phoneNumber = "8801916948710";
   const message = encodeURIComponent("Hello, I would like to inquire about your legal services.");
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
+
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
 
   return (
     <div className="fixed bottom-6 right-6 z-[60] flex flex-col items-end gap-3 sm:bottom-8 sm:right-8">

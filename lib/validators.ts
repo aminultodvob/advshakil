@@ -14,7 +14,7 @@ export const postSchema = z.object({
   title: z.string().min(3),
   slug: z.string().min(3),
   excerpt: z.string().min(10),
-  coverImage: z.string().url(),
+  coverImage: z.string().min(1),
   content: z.string().min(10),
   status: z.enum(postStatuses),
   featured: z.boolean().default(false)

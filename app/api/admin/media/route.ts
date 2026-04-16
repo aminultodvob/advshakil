@@ -1,6 +1,4 @@
-import { mkdir, writeFile } from "fs/promises";
-import path from "path";
-import { randomUUID } from "crypto";
+import { v2 as cloudinary } from "cloudinary";
 import { revalidatePath } from "next/cache";
 
 import { prisma } from "@/lib/prisma";
@@ -9,34 +7,47 @@ import { requireAdmin, jsonError } from "@/lib/api";
 export async function POST(request: Request) {
   try {
     await requireAdmin();
-  } catch (error) {
-    return error as Response;
-  }
 
-  const formData = await request.formData();
-  const file = formData.get("file");
+    const formData = await request.formData();
+    const file = formData.get("file");
 
-  if (!(file instanceof File)) {
-    return jsonError("Please attach a valid file.");
-  }
-
-  const bytes = await file.arrayBuffer();
-  const buffer = Buffer.from(bytes);
-  const extension = path.extname(file.name) || ".png";
-  const fileName = `${randomUUID()}${extension}`;
-  const uploadDir = path.join(process.cwd(), "public", "uploads");
-
-  await mkdir(uploadDir, { recursive: true });
-  await writeFile(path.join(uploadDir, fileName), buffer);
-
-  const asset = await prisma.mediaAsset.create({
-    data: {
-      name: file.name,
-      url: `/uploads/${fileName}`
+    if (!(file instanceof File)) {
+      return jsonError("Please attach a valid file.");
     }
-  });
 
-  revalidatePath("/admin/media");
+    const bytes = await file.arrayBuffer();
+    const buffer = Buffer.from(bytes);
 
-  return Response.json(asset);
+    // Upload to Cloudinary using a stream
+    const uploadResponse = await new Promise((resolve, reject) => {
+      cloudinary.uploader
+        .upload_stream(
+          {
+            folder: "adv-shakil",
+            resource_type: "auto"
+          },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          }
+        )
+        .end(buffer);
+    }) as any;
+
+    const asset = await prisma.mediaAsset.create({
+      data: {
+        name: file.name,
+        url: uploadResponse.secure_url
+      }
+    });
+
+    revalidatePath("/admin/media");
+
+    return Response.json(asset);
+  } catch (error: any) {
+    if (error instanceof Response) return error;
+    
+    console.error("[MEDIA_POST]", error);
+    return jsonError("Failed to upload image to Cloudinary.", 500);
+  }
 }

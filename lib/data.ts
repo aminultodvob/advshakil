@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 
 export async function getHomepageData() {
-  const [practiceAreas, testimonials, caseStudies, featuredPost] =
+  const [practiceAreas, testimonials, caseStudies, featuredPost, recentPosts] =
     await Promise.all([
       prisma.practiceArea.findMany({ orderBy: { createdAt: "asc" } }),
       prisma.testimonial.findMany({
@@ -15,6 +15,11 @@ export async function getHomepageData() {
       prisma.blogPost.findFirst({
         where: { status: "PUBLISHED", featured: true },
         orderBy: { publishedAt: "desc" }
+      }),
+      prisma.blogPost.findMany({
+        where: { status: "PUBLISHED" },
+        take: 4,
+        orderBy: [{ featured: "desc" }, { publishedAt: "desc" }]
       })
     ]);
 
@@ -22,7 +27,8 @@ export async function getHomepageData() {
     practiceAreas,
     testimonials,
     caseStudies,
-    featuredPost
+    featuredPost,
+    recentPosts
   };
 }
 

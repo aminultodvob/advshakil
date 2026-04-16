@@ -5,7 +5,6 @@ import { SectionHeading } from "@/components/ui/section-heading";
 
 export default async function BlogPage() {
   const posts = await getPublishedPosts();
-  const [featured, ...rest] = posts;
 
   return (
     <SiteShell>
@@ -16,13 +15,10 @@ export default async function BlogPage() {
             title="Thoughtful legal writing for clients, founders, and decision-makers."
             copy="A modern publishing system designed for authority-building content, practical guidance, and search-friendly visibility."
           />
-          <div className="mt-14 space-y-8">
-            {featured ? <PostCard post={featured} featured /> : null}
-            <div className="grid gap-6 lg:grid-cols-2">
-              {rest.map((post) => (
-                <PostCard key={post.id} post={post} />
-              ))}
-            </div>
+          <div className="mt-14 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {posts.map((post) => (
+              <PostCard key={post.id} post={post} />
+            ))}
           </div>
         </div>
       </section>

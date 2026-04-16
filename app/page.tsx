@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, MapPin, Star } from "lucide-react";
+import { ArrowRight, Flag, Landmark, MapPin, Star } from "lucide-react";
 
 import { getHomepageData } from "@/lib/data";
 import { SiteShell } from "@/components/site/site-shell";
@@ -10,9 +10,10 @@ import { AnimatedCounter } from "@/components/site/animated-counter";
 import { TestimonialCarousel } from "@/components/site/testimonial-carousel";
 import { MotionDiv } from "@/components/site/motion";
 import { PracticeIcon } from "@/components/site/practice-icon";
+import { PostCard } from "@/components/site/post-card";
 
 export default async function HomePage() {
-  const { practiceAreas, testimonials, caseStudies, featuredPost } =
+  const { practiceAreas, testimonials, caseStudies, featuredPost, recentPosts } =
     await getHomepageData();
 
   const stats = [
@@ -58,7 +59,7 @@ export default async function HomePage() {
                   <span className="lg:block">Legal Strategist |</span>
                   <span className="lg:block">Corporate &amp; Tax Expert</span>
                 </h1>
-                <p className="max-w-2xl text-lg leading-8 text-slate-700 dark:text-white/80 sm:text-xl">
+                <p className="max-w-2xl text-lg leading-8 text-slate-700 dark:text-white/90 sm:text-xl">
                   Shakil Ahmad delivers high-trust legal representation across
                   litigation, corporate law, documentation, arbitration, income
                   tax, and VAT with the calm judgment, sharp preparation, and
@@ -104,7 +105,7 @@ export default async function HomePage() {
                     <p className="font-serif text-4xl text-ink dark:text-white">
                       <AnimatedCounter value={stat.value} suffix={stat.suffix} />
                     </p>
-                    <p className="mt-2 text-sm text-slate-600 dark:text-white/70">{stat.label}</p>
+                    <p className="mt-2 text-sm text-slate-600 dark:text-white/80">{stat.label}</p>
                   </div>
                 ))}
               </MotionDiv>
@@ -156,7 +157,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="section-space">
+      <section className="pb-12 pt-10 sm:pb-14 sm:pt-12 lg:pb-16 lg:pt-14">
         <div className="container-shell">
           <div className="relative overflow-hidden rounded-[36px]">
             <div className="absolute inset-0">
@@ -168,20 +169,151 @@ export default async function HomePage() {
                 sizes="100vw"
               />
             </div>
-            <div className="absolute inset-0 bg-[linear-gradient(110deg,rgba(8,17,28,0.88),rgba(8,17,28,0.58),rgba(8,17,28,0.3))]" />
+            <div className="absolute inset-0 bg-[linear-gradient(110deg,rgba(7,15,24,0.94),rgba(10,20,32,0.74),rgba(10,20,32,0.42))]" />
             <div className="relative z-10 grid min-h-[420px] items-end p-8 sm:p-10 lg:min-h-[500px] lg:p-14">
               <div className="max-w-3xl space-y-5">
                 <p className="text-xs font-semibold uppercase tracking-[0.32em] text-gold">
                   Institutional Presence
                 </p>
-                <h2 className="font-serif text-4xl leading-tight text-white sm:text-5xl">
+                <h2 className="font-serif text-4xl leading-tight text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.35)] sm:text-5xl">
                   Advocacy informed by constitutional seriousness and courtroom discipline.
                 </h2>
-                <p className="max-w-2xl text-base leading-8 text-white/80 sm:text-lg">
+                <p className="max-w-2xl text-base leading-8 text-white sm:text-lg">
                   The legal identity is shaped not only by private counsel and commercial
                   strategy, but by a deeper alignment with institutional rigor, public
                   trust, and the formal gravity of the justice system.
                 </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="pb-14 pt-8 sm:pb-16 sm:pt-10 lg:pb-18 lg:pt-12">
+        <div className="container-shell">
+          <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+            <div className="relative overflow-hidden rounded-[40px] shadow-2xl ring-1 ring-gold/20">
+              <div className="relative min-h-[360px] sm:min-h-[460px]">
+                <Image
+                  src="/images/09.avif"
+                  alt="Advocate Shakil Ahmad serving in political leadership with the National Citizen Party"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 620px"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/10 to-transparent" />
+              </div>
+            </div>
+
+            <div className="glass-panel gold-ring p-8 sm:p-10">
+              <p className="eyebrow">Political Leadership</p>
+              <h2 className="mt-6 font-serif text-4xl leading-tight text-ink sm:text-5xl dark:text-white">
+                Serving the National Citizen Party with national-level coordination responsibility.
+              </h2>
+              <p className="mt-5 text-lg leading-8 text-slate-700 dark:text-white/90">
+                Alongside his legal career, Advocate Shakil Ahmad serves the
+                National Citizen Party (NCP) as{" "}
+                <span className="font-semibold text-slate-900 dark:text-white">
+                  Central Joint Chief Coordinator
+                </span>.
+                This role reflects an additional dimension of leadership built on
+                organization, public engagement, institutional responsibility,
+                and direct involvement in matters of national importance.
+              </p>
+              <p className="mt-5 text-lg leading-8 text-slate-700 dark:text-white/90">
+                The combination of courtroom discipline and political coordination
+                gives his profile a rare balance of legal authority, public trust,
+                and strategic clarity in both civic and professional spheres.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="pb-14 pt-6 sm:pb-16 sm:pt-8 lg:pb-18 lg:pt-10">
+        <div className="container-shell">
+          <div className="grid gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
+            <div className="space-y-6">
+              <SectionHeading
+                eyebrow="National Leadership"
+                title="Public leadership shaped by service, national responsibility, and love for country."
+                copy="Alongside Supreme Court practice, Adv Shakil Ahmad serves the National Citizen Party as Central Joint Chief Coordinator, bringing legal discipline, public engagement, and organizational leadership into national service."
+              />
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="glass-panel p-6">
+                  <Flag className="h-6 w-6 text-gold" />
+                  <h3 className="mt-4 font-serif text-2xl text-slate-900 dark:text-white">
+                    Serving the Nation
+                  </h3>
+                  <p className="mt-3 text-base leading-8 text-slate-700 dark:text-white/90">
+                    His political role reflects civic commitment, strategic coordination,
+                    and active service grounded in national interest.
+                  </p>
+                </div>
+                <div className="glass-panel p-6">
+                  <Landmark className="h-6 w-6 text-gold" />
+                  <h3 className="mt-4 font-serif text-2xl text-slate-900 dark:text-white">
+                    Leadership with Discipline
+                  </h3>
+                  <p className="mt-3 text-base leading-8 text-slate-700 dark:text-white/90">
+                    The same seriousness seen in legal practice carries into public
+                    leadership, communication, and organizational responsibility.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="glass-panel gold-ring relative overflow-hidden p-4 sm:p-5">
+              <div
+                aria-hidden
+                className="pointer-events-none absolute -right-10 -top-10 h-36 w-36 rounded-full bg-gold/15 blur-3xl"
+              />
+              <div className="relative overflow-hidden rounded-[30px] border border-white/10 bg-[linear-gradient(145deg,rgba(16,24,35,0.98),rgba(28,40,55,0.94))] p-4 shadow-2xl sm:p-5">
+                <div className="mb-4 flex items-center justify-between gap-4 border-b border-white/10 pb-4">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gold">
+                      Leadership Address
+                    </p>
+                    <h3 className="mt-2 font-serif text-2xl text-white sm:text-3xl">
+                      Voice, conviction, and service to the nation
+                    </h3>
+                  </div>
+                  <div className="hidden rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-white/75 sm:block">
+                    National Citizen Party
+                  </div>
+                </div>
+
+                <div className="aspect-video overflow-hidden rounded-[24px] border border-white/10 bg-black shadow-[0_24px_60px_rgba(0,0,0,0.35)]">
+                  <iframe
+                    src="https://www.youtube.com/embed/iR9hp2Pu19w"
+                    title="Adv Shakil Ahmad leadership video"
+                    className="h-full w-full"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                  />
+                </div>
+
+                <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                  <div className="rounded-[20px] border border-white/10 bg-white/5 px-4 py-3">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-gold">
+                      Public Leadership
+                    </p>
+                    <p className="mt-2 text-sm leading-7 text-white/80">
+                      A presentation of national responsibility, public connection,
+                      and disciplined political communication.
+                    </p>
+                  </div>
+                  <div className="rounded-[20px] border border-white/10 bg-white/5 px-4 py-3">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-gold">
+                      Service & Vision
+                    </p>
+                    <p className="mt-2 text-sm leading-7 text-white/80">
+                      Framed to reflect love for country, civic commitment, and
+                      leadership grounded in accountability.
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -258,7 +390,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {featuredPost ? (
+      {recentPosts.length ? (
         <section className="section-space">
           <div className="container-shell">
             <SectionHeading
@@ -266,24 +398,19 @@ export default async function HomePage() {
               title="Modern legal thinking for serious clients and ambitious businesses."
               copy="Insight-led articles designed to inform, reassure, and position legal counsel as a strategic advantage."
             />
-            <Link
-              href={`/blog/${featuredPost.slug}`}
-              className="mt-14 block overflow-hidden rounded-[34px] border border-white/80 bg-white shadow-card dark:border-white/10 dark:bg-[#233142]"
-            >
-              <div className="grid items-center gap-8 p-8 lg:grid-cols-[0.85fr_1.15fr] lg:p-12">
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.32em] text-gold">
-                    Featured Article
-                  </p>
-                  <h3 className="mt-4 font-serif text-4xl text-ink dark:text-white">
-                    {featuredPost.title}
-                  </h3>
-                </div>
-                <p className="text-lg leading-8 text-slate-700 dark:text-white/80">
-                  {featuredPost.excerpt}
-                </p>
-              </div>
-            </Link>
+            <div className="mt-14 flex items-center justify-between gap-4">
+              <p className="text-sm uppercase tracking-[0.22em] text-gold">
+                Recent Articles
+              </p>
+              <LinkButton href="/blog" variant="secondary">
+                All Articles
+              </LinkButton>
+            </div>
+            <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+              {recentPosts.slice(0, 3).map((post) => (
+                <PostCard key={post.id} post={post} />
+              ))}
+            </div>
           </div>
         </section>
       ) : null}
@@ -297,7 +424,7 @@ export default async function HomePage() {
                 <h2 className="mt-6 font-serif text-4xl text-ink dark:text-white sm:text-5xl">
                   Legal matters deserve trusted strategy from the very first conversation.
                 </h2>
-                <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-700 dark:text-white/80">
+                <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-700 dark:text-white/90">
                   Start with a confidential consultation designed to clarify the
                   legal landscape, identify the core risks, and define the next
                   best move with confidence.

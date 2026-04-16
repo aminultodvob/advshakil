@@ -7,27 +7,34 @@ import { postSchema } from "@/lib/validators";
 export async function POST(request: Request) {
   try {
     await requireAdmin();
-  } catch (error) {
-    return error as Response;
-  }
 
-  const body = await request.json().catch(() => null);
-  const parsed = postSchema.safeParse(body);
+    const body = await request.json().catch(() => null);
+    const parsed = postSchema.safeParse(body);
 
-  if (!parsed.success) {
-    return jsonError("Invalid blog post data.");
-  }
-
-  const post = await prisma.blogPost.create({
-    data: {
-      ...parsed.data,
-      publishedAt: parsed.data.status === "PUBLISHED" ? new Date() : null
+    if (!parsed.success) {
+      return jsonError("Invalid blog post data.");
     }
-  });
 
-  revalidatePath("/blog");
-  revalidatePath("/");
-  revalidatePath("/admin/posts");
+    const post = await prisma.blogPost.create({
+      data: {
+        ...parsed.data,
+        publishedAt: parsed.data.status === "PUBLISHED" ? new Date() : null
+      }
+    });
 
-  return Response.json(post);
+    revalidatePath("/blog");
+    revalidatePath("/");
+    revalidatePath("/admin/posts");
+
+    return Response.json(post);
+  } catch (error: any) {
+    if (error instanceof Response) return error;
+    
+    if (error.code === "P2002") {
+      return jsonError("A post with this slug already exists.", 409);
+    }
+    
+    console.error("[POSTS_POST]", error);
+    return jsonError("An unexpected error occurred.", 500);
+  }
 }

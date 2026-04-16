@@ -57,13 +57,13 @@ export default function AboutPage() {
               copy="Advocate Shakil Ahmad combines Supreme Court practice, public-interest legal work, and strategic advisory experience with a profile shaped by academic distinction and direct service in moments of national significance."
             />
             <div className="glass-panel gold-ring p-8 sm:p-10">
-              <p className="text-lg leading-9 text-ink/75">
+              <p className="text-lg leading-9 text-ink/80 dark:text-white/90">
                 He is currently practicing law at the Bangladesh Supreme Court
                 and serving as a Special Public Prosecutor with the rank of
                 Assistant Attorney General in the Pilkhana massacre case. He
                 also leads <span className="font-semibold text-ink">'Law Seba'</span> Law Chamber as Head of Chamber.
               </p>
-              <p className="mt-6 text-lg leading-9 text-ink/75">
+              <p className="mt-6 text-lg leading-9 text-ink/80 dark:text-white/90">
                 His profile is distinguished not only by legal practice, but by
                 direct involvement in public-interest legal support. From the
                 beginning of the July movement, he provided free legal assistance
@@ -117,8 +117,8 @@ export default function AboutPage() {
               >
                 <p className="font-serif text-3xl text-gold">{item.year}</p>
                 <div>
-                  <h3 className="font-serif text-3xl text-ink">{item.title}</h3>
-                  <p className="mt-3 max-w-4xl text-base leading-8 text-ink/70">
+                  <h3 className="font-serif text-3xl text-ink dark:text-white">{item.title}</h3>
+                  <p className="mt-3 max-w-4xl text-base leading-8 text-ink/70 dark:text-white/80">
                     {item.copy}
                   </p>
                 </div>
@@ -164,8 +164,8 @@ export default function AboutPage() {
             ].map((item) => (
               <div key={item.title} className="glass-panel p-8">
                 <item.icon className="h-6 w-6 text-gold" />
-                <h3 className="mt-5 font-serif text-3xl text-ink">{item.title}</h3>
-                <p className="mt-4 text-base leading-8 text-ink/70">{item.copy}</p>
+                <h3 className="mt-5 font-serif text-3xl text-ink dark:text-white">{item.title}</h3>
+                <p className="mt-4 text-base leading-8 text-ink/75 dark:text-white/80">{item.copy}</p>
               </div>
             ))}
           </div>
@@ -193,14 +193,14 @@ export default function AboutPage() {
               <h2 className="mt-6 font-serif text-4xl leading-tight text-ink sm:text-5xl">
                 Serving the National Citizen Party with national-level coordination responsibility.
               </h2>
-              <p className="mt-5 text-lg leading-8 text-ink/72">
+              <p className="mt-5 text-lg leading-8 text-ink/72 dark:text-white/90">
                 Alongside his legal career, Advocate Shakil Ahmad serves the
-                National Citizen Party (NCP) as <span className="font-semibold text-ink">Central Joint Chief Coordinator</span>.
+                National Citizen Party (NCP) as <span className="font-semibold text-ink dark:text-white">Central Joint Chief Coordinator</span>.
                 This role reflects an additional dimension of leadership built on
                 organization, public engagement, institutional responsibility,
                 and direct involvement in matters of national importance.
               </p>
-              <p className="mt-5 text-lg leading-8 text-ink/70">
+              <p className="mt-5 text-lg leading-8 text-ink/70 dark:text-white/90">
                 The combination of courtroom discipline and political coordination
                 gives his profile a rare balance of legal authority, public trust,
                 and strategic clarity in both civic and professional spheres.

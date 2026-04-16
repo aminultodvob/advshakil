@@ -13,8 +13,8 @@ const links = [
   { href: "/about", label: "About" },
   { href: "/practice-areas", label: "Practice Areas" },
   { href: "/case-studies", label: "Case Studies" },
-  { href: "/blog", label: "Blog" },
-  { href: "/contact", label: "Contact" }
+  { href: "https://ncp111.vercel.app/en", label: "Political Space", external: true },
+  { href: "/blog", label: "Blog" }
 ];
 
 export function Navbar() {
@@ -40,6 +40,8 @@ export function Navbar() {
             <Link
               key={link.href}
               href={link.href}
+              target={link.external ? "_blank" : undefined}
+              rel={link.external ? "noreferrer" : undefined}
               className="text-sm font-medium text-slate-800 transition hover:text-slate-950 dark:text-white/90 dark:hover:text-white"
             >
               {link.label}
@@ -75,6 +77,8 @@ export function Navbar() {
             <Link
               key={link.href}
               href={link.href}
+              target={link.external ? "_blank" : undefined}
+              rel={link.external ? "noreferrer" : undefined}
               onClick={() => setOpen(false)}
               className="text-sm font-medium text-slate-800 dark:text-white/90"
             >

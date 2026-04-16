@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 :root {
   color-scheme: light;
   --color-ink: 11 28 44;
@@ -62,7 +72,7 @@ body {
 }
 
 .section-space {
-  @apply py-20 sm:py-24 lg:py-28;
+  @apply py-14 sm:py-16 lg:py-20;
 }
 
 .eyebrow {
@@ -153,9 +163,13 @@ body {
 }
 
 .tiptap {
-  @apply min-h-[240px] rounded-b-3xl border border-t-0 bg-white px-5 py-4 text-sm text-ink outline-none;
+  @apply min-h-[320px] rounded-b-[30px] border border-t-0 bg-white px-5 py-4 text-base text-ink outline-none sm:px-8 sm:py-6;
   border-color: rgba(var(--border-soft), 0.1);
   background: rgba(var(--surface), 1);
+}
+
+.tiptap img {
+  @apply mx-auto my-8 block max-w-full rounded-2xl shadow-lg;
 }
 
 .tiptap p.is-editor-empty:first-child::before {
