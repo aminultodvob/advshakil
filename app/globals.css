@@ -1,0 +1,165 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --color-ink: 11 28 44;
+  --color-gold: 201 161 74;
+  --color-mist: 248 249 251;
+  --color-stone: 149 161 175;
+  --surface: 255 255 255;
+  --surface-soft: 247 248 250;
+  --surface-strong: 239 242 246;
+  --border-soft: 11 28 44;
+  --hero-glow: rgba(201, 161, 74, 0.14);
+  --panel-alpha: 0.8;
+  --copy-alpha: 0.76;
+  --muted-alpha: 0.66;
+  --soft-alpha: 0.54;
+}
+
+.dark {
+  color-scheme: dark;
+  --color-ink: 245 247 250;
+  --color-gold: 212 176 102;
+  --color-mist: 18 26 36;
+  --color-stone: 172 181 192;
+  --surface: 27 38 52;
+  --surface-soft: 22 32 45;
+  --surface-strong: 38 51 68;
+  --border-soft: 255 255 255;
+  --hero-glow: rgba(212, 176, 102, 0.1);
+  --panel-alpha: 0.96;
+  --copy-alpha: 0.88;
+  --muted-alpha: 0.8;
+  --soft-alpha: 0.72;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-mist font-sans text-ink antialiased;
+  background-image:
+    radial-gradient(circle at top, var(--hero-glow), transparent 28%),
+    linear-gradient(
+      180deg,
+      rgb(var(--surface)) 0%,
+      rgb(var(--color-mist)) 48%,
+      rgb(var(--surface)) 100%
+    );
+  background-attachment: fixed;
+}
+
+::selection {
+  background: rgba(201, 161, 74, 0.28);
+}
+
+.container-shell {
+  @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+}
+
+.section-space {
+  @apply py-20 sm:py-24 lg:py-28;
+}
+
+.eyebrow {
+  @apply inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] text-gold shadow-sm backdrop-blur;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(var(--color-gold), 0.2);
+}
+
+.dark .eyebrow {
+  background: #273443;
+}
+
+.section-title {
+  @apply font-serif text-4xl leading-tight text-slate-900 dark:text-white sm:text-5xl;
+}
+
+.section-copy {
+  @apply max-w-2xl text-base leading-8 sm:text-lg;
+  color: rgba(var(--color-ink), var(--copy-alpha));
+}
+
+.glass-panel {
+  @apply rounded-[28px] shadow-card backdrop-blur-xl;
+  border: 1px solid rgba(var(--border-soft), 0.08);
+  background: rgba(var(--surface), var(--panel-alpha));
+}
+
+.gold-ring {
+  box-shadow:
+    inset 0 0 0 1px rgba(var(--color-gold), 0.16),
+    0 18px 48px rgba(11, 28, 44, 0.08);
+}
+
+.surface-card {
+  background: rgb(var(--surface));
+  border: 1px solid rgba(var(--border-soft), 0.08);
+}
+
+.surface-soft {
+  background: rgb(var(--surface-soft));
+}
+
+.surface-strong {
+  background: rgb(var(--surface-strong));
+}
+
+.prose-content {
+  @apply max-w-none text-lg leading-8;
+  color: rgba(var(--color-ink), 0.8);
+}
+
+.text-copy {
+  color: rgba(var(--color-ink), var(--copy-alpha));
+}
+
+.text-muted {
+  color: rgba(var(--color-ink), var(--muted-alpha));
+}
+
+.text-soft {
+  color: rgba(var(--color-ink), var(--soft-alpha));
+}
+
+.prose-content h2,
+.prose-content h3,
+.prose-content h4 {
+  @apply mt-10 font-serif text-ink;
+}
+
+.prose-content h2 {
+  @apply text-3xl;
+}
+
+.prose-content h3 {
+  @apply text-2xl;
+}
+
+.prose-content p {
+  @apply mt-5;
+}
+
+.prose-content ul {
+  @apply mt-5 list-disc space-y-3 pl-6;
+}
+
+.prose-content img {
+  @apply mt-8 rounded-3xl;
+}
+
+.tiptap {
+  @apply min-h-[240px] rounded-b-3xl border border-t-0 bg-white px-5 py-4 text-sm text-ink outline-none;
+  border-color: rgba(var(--border-soft), 0.1);
+  background: rgba(var(--surface), 1);
+}
+
+.tiptap p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  @apply pointer-events-none float-left h-0;
+  color: rgba(var(--color-ink), 0.35);
+}
