@@ -13,7 +13,7 @@ const links = [
   { href: "/about", label: "About" },
   { href: "/practice-areas", label: "Practice Areas" },
   { href: "/case-studies", label: "Case Studies" },
-  { href: "https://ncp111.vercel.app/en", label: "Political Space", external: true },
+  { href: "https://politician.shakil.me/bn", label: "Political Space", external: true },
   { href: "/blog", label: "Blog" }
 ];
 
