@@ -12,7 +12,7 @@ export function LoginForm() {
   const params = useSearchParams();
   const callbackUrl = params.get("callbackUrl") || "/admin";
   const [email, setEmail] = useState("admin@shakilahmad.com");
-  const [password, setPassword] = useState("ChangeMe123!");
+  const [password, setPassword] = useState("admin@4321");
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
