@@ -1,9 +1,38 @@
+import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import { localizeCaseStudy } from "@/lib/content-localization";
 import { t } from "@/lib/i18n";
 import { getLocale } from "@/lib/i18n-server";
+import { absoluteUrl, DEFAULT_OG_IMAGE, getSeoKeywords } from "@/lib/seo";
 import { SiteShell } from "@/components/site/site-shell";
 import { SectionHeading } from "@/components/ui/section-heading";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const title =
+    locale === "bn"
+      ? "কেস স্টাডি | অ্যাডভোকেট সাকিল আহমাদ"
+      : "Case Studies | Legal Strategy, Litigation, Corporate & VAT Matters";
+  const description =
+    locale === "bn"
+      ? "কৌশল, বিরোধ ব্যবস্থাপনা, করপোরেট সমস্যা ও ভ্যাট ঝুঁকি মোকাবিলায় অ্যাডভোকেট সাকিল আহমাদের নির্বাচিত কেস স্টাডি দেখুন।"
+      : "Review selected case studies from Adv Shakil Ahmad covering legal strategy, litigation, corporate disputes, and VAT risk management.";
+
+  return {
+    title,
+    description,
+    keywords: getSeoKeywords(locale),
+    alternates: {
+      canonical: absoluteUrl("/case-studies")
+    },
+    openGraph: {
+      title,
+      description,
+      url: absoluteUrl("/case-studies"),
+      images: [{ url: absoluteUrl(DEFAULT_OG_IMAGE), alt: "Case Studies" }]
+    }
+  };
+}
 
 export default async function CaseStudiesPage() {
   const locale = await getLocale();

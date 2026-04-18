@@ -1,11 +1,49 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { prisma } from "@/lib/prisma";
 import { localizePracticeArea } from "@/lib/content-localization";
 import { t } from "@/lib/i18n";
 import { getLocale } from "@/lib/i18n-server";
+import { absoluteUrl, DEFAULT_OG_IMAGE, getSeoKeywords, SITE_NAME } from "@/lib/seo";
 import { SiteShell } from "@/components/site/site-shell";
 import { PracticeIcon } from "@/components/site/practice-icon";
+
+export async function generateMetadata({
+  params
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const locale = await getLocale();
+  const { slug } = await params;
+  const practiceArea = await prisma.practiceArea.findUnique({
+    where: { slug }
+  });
+
+  if (!practiceArea) {
+    return {};
+  }
+
+  const localizedPracticeArea = localizePracticeArea(practiceArea, locale);
+  const title = `${localizedPracticeArea.title} | ${SITE_NAME}`;
+  const description = localizedPracticeArea.summary;
+  const url = absoluteUrl(`/practice-areas/${localizedPracticeArea.slug}`);
+
+  return {
+    title,
+    description,
+    keywords: getSeoKeywords(locale),
+    alternates: {
+      canonical: url
+    },
+    openGraph: {
+      title,
+      description,
+      url,
+      images: [{ url: absoluteUrl(DEFAULT_OG_IMAGE), alt: localizedPracticeArea.title }]
+    }
+  };
+}
 
 export default async function PracticeAreaDetailPage({
   params

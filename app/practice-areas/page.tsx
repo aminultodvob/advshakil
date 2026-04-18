@@ -1,12 +1,41 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 
 import { prisma } from "@/lib/prisma";
 import { localizePracticeArea } from "@/lib/content-localization";
 import { t } from "@/lib/i18n";
 import { getLocale } from "@/lib/i18n-server";
+import { absoluteUrl, DEFAULT_OG_IMAGE, getSeoKeywords } from "@/lib/seo";
 import { SiteShell } from "@/components/site/site-shell";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { PracticeIcon } from "@/components/site/practice-icon";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const title =
+    locale === "bn"
+      ? "প্র্যাকটিস এরিয়া | অ্যাডভোকেট সাকিল আহমাদ"
+      : "Practice Areas | Litigation, Corporate Law, Tax, VAT, Arbitration";
+  const description =
+    locale === "bn"
+      ? "লিটিগেশন, করপোরেট আইন, ডকুমেন্টেশন, আরবিট্রেশন, আয়কর ও ভ্যাটসহ অ্যাডভোকেট সাকিল আহমাদের মূল প্র্যাকটিস এরিয়াগুলো দেখুন।"
+      : "Explore the core practice areas of Adv Shakil Ahmad, including litigation, corporate law, documentation, arbitration, income tax, and VAT.";
+
+  return {
+    title,
+    description,
+    keywords: getSeoKeywords(locale),
+    alternates: {
+      canonical: absoluteUrl("/practice-areas")
+    },
+    openGraph: {
+      title,
+      description,
+      url: absoluteUrl("/practice-areas"),
+      images: [{ url: absoluteUrl(DEFAULT_OG_IMAGE), alt: "Practice Areas" }]
+    }
+  };
+}
 
 export default async function PracticeAreasPage() {
   const locale = await getLocale();

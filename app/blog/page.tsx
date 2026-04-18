@@ -1,10 +1,39 @@
+import type { Metadata } from "next";
 import { getPublishedPosts } from "@/lib/data";
 import { localizeBlogPost } from "@/lib/content-localization";
 import { t } from "@/lib/i18n";
 import { getLocale } from "@/lib/i18n-server";
+import { absoluteUrl, DEFAULT_OG_IMAGE, getSeoKeywords } from "@/lib/seo";
 import { SiteShell } from "@/components/site/site-shell";
 import { PostCard } from "@/components/site/post-card";
 import { SectionHeading } from "@/components/ui/section-heading";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const title =
+    locale === "bn"
+      ? "ব্লগ | অ্যাডভোকেট সাকিল আহমাদ"
+      : "Legal Blog | Shakil Ahmad on Corporate Law, Tax, Litigation & Strategy";
+  const description =
+    locale === "bn"
+      ? "করপোরেট আইন, ট্যাক্স, ভ্যাট, লিটিগেশন, কৌশলগত আইনচিন্তা এবং জনজীবন নিয়ে অ্যাডভোকেট সাকিল আহমাদের ব্লগ।"
+      : "Read legal insights from Adv Shakil Ahmad on corporate law, tax, VAT, litigation, strategic legal thinking, and public leadership.";
+
+  return {
+    title,
+    description,
+    keywords: getSeoKeywords(locale),
+    alternates: {
+      canonical: absoluteUrl("/blog")
+    },
+    openGraph: {
+      title,
+      description,
+      url: absoluteUrl("/blog"),
+      images: [{ url: absoluteUrl(DEFAULT_OG_IMAGE), alt: "Legal Blog" }]
+    }
+  };
+}
 
 export default async function BlogPage() {
   const locale = await getLocale();

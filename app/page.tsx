@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Flag, Landmark, MapPin, Star } from "lucide-react";
@@ -5,6 +6,13 @@ import { ArrowRight, Flag, Landmark, MapPin, Star } from "lucide-react";
 import { getHomepageData } from "@/lib/data";
 import { t } from "@/lib/i18n";
 import { getLocale } from "@/lib/i18n-server";
+import {
+  absoluteUrl,
+  DEFAULT_OG_IMAGE,
+  getHomeDescription,
+  getHomeTitle,
+  getSeoKeywords
+} from "@/lib/seo";
 import {
   localizeBlogPost,
   localizeCaseStudy,
@@ -19,6 +27,37 @@ import { TestimonialCarousel } from "@/components/site/testimonial-carousel";
 import { MotionDiv } from "@/components/site/motion";
 import { PracticeIcon } from "@/components/site/practice-icon";
 import { PostCard } from "@/components/site/post-card";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const title = getHomeTitle(locale);
+  const description = getHomeDescription(locale);
+
+  return {
+    title,
+    description,
+    keywords: getSeoKeywords(locale),
+    alternates: {
+      canonical: absoluteUrl("/")
+    },
+    openGraph: {
+      title,
+      description,
+      url: absoluteUrl("/"),
+      images: [
+        {
+          url: absoluteUrl(DEFAULT_OG_IMAGE),
+          alt: "Adv Shakil Ahmad"
+        }
+      ]
+    },
+    twitter: {
+      title,
+      description,
+      images: [absoluteUrl(DEFAULT_OG_IMAGE)]
+    }
+  };
+}
 
 export default async function HomePage() {
   const locale = await getLocale();

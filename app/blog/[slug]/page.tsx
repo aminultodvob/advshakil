@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Clock3, CalendarDays, FileText, RefreshCw } from "lucide-react";
@@ -6,6 +7,7 @@ import { prisma } from "@/lib/prisma";
 import { localizeBlogPost } from "@/lib/content-localization";
 import { t } from "@/lib/i18n";
 import { getLocale } from "@/lib/i18n-server";
+import { absoluteUrl, getSeoKeywords, SITE_NAME } from "@/lib/seo";
 import {
   formatDate,
   formatDateTime,
@@ -14,6 +16,50 @@ import {
 } from "@/lib/utils";
 import { SiteShell } from "@/components/site/site-shell";
 import { BlogSocial } from "@/components/site/blog-social";
+
+export async function generateMetadata({
+  params
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const locale = await getLocale();
+  const { slug } = await params;
+  const post = await prisma.blogPost.findFirst({
+    where: { slug, status: "PUBLISHED" }
+  });
+
+  if (!post) {
+    return {};
+  }
+
+  const localizedPost = localizeBlogPost(post, locale);
+  const title = `${localizedPost.title} | ${SITE_NAME}`;
+  const description = localizedPost.excerpt;
+  const url = absoluteUrl(`/blog/${localizedPost.slug}`);
+
+  return {
+    title,
+    description,
+    keywords: getSeoKeywords(locale),
+    alternates: {
+      canonical: url
+    },
+    openGraph: {
+      type: "article",
+      title,
+      description,
+      url,
+      publishedTime: post.publishedAt?.toISOString(),
+      modifiedTime: post.updatedAt.toISOString(),
+      images: [{ url: localizedPost.coverImage, alt: localizedPost.title }]
+    },
+    twitter: {
+      title,
+      description,
+      images: [localizedPost.coverImage]
+    }
+  };
+}
 
 export default async function BlogDetailPage({
   params
@@ -62,11 +108,33 @@ export default async function BlogDetailPage({
       icon: RefreshCw
     }
   ];
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: localizedPost.title,
+    description: localizedPost.excerpt,
+    image: [localizedPost.coverImage],
+    datePublished: publishedDate.toISOString(),
+    dateModified: localizedPost.updatedAt.toISOString(),
+    author: {
+      "@type": "Person",
+      name: "Adv Shakil Ahmad"
+    },
+    publisher: {
+      "@type": "Person",
+      name: "Adv Shakil Ahmad"
+    },
+    mainEntityOfPage: absoluteUrl(`/blog/${localizedPost.slug}`)
+  };
 
   return (
     <SiteShell>
       <section className="section-space">
         <div className="container-shell max-w-5xl">
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+          />
           <div className="rounded-[40px] border border-white/70 bg-white/90 p-8 shadow-card backdrop-blur-xl dark:border-white/10 dark:bg-[rgb(var(--surface-soft))/0.92] sm:p-10">
             <div className="space-y-6 text-center">
               <span className="eyebrow">{t(locale, "Published Insight", "প্রকাশিত অন্তর্দৃষ্টি")}</span>

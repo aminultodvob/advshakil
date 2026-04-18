@@ -1,10 +1,39 @@
+import type { Metadata } from "next";
 import { CalendarDays, Mail, MapPin, Phone } from "lucide-react";
 
 import { t } from "@/lib/i18n";
 import { getLocale } from "@/lib/i18n-server";
+import { absoluteUrl, DEFAULT_OG_IMAGE, getSeoKeywords } from "@/lib/seo";
 import { SiteShell } from "@/components/site/site-shell";
 import { ContactForm } from "@/components/site/contact-form";
 import { SectionHeading } from "@/components/ui/section-heading";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const title =
+    locale === "bn"
+      ? "যোগাযোগ | অ্যাডভোকেট সাকিল আহমাদ"
+      : "Contact Adv Shakil Ahmad | Supreme Court Lawyer, Corporate & Tax Expert";
+  const description =
+    locale === "bn"
+      ? "পরামর্শ, আইনগত কৌশল, করপোরেট আইন, ট্যাক্স, লিটিগেশন বা পেশাগত যোগাযোগের জন্য অ্যাডভোকেট সাকিল আহমাদের সঙ্গে যোগাযোগ করুন।"
+      : "Contact Adv Shakil Ahmad for consultation, litigation strategy, corporate law, tax, VAT, arbitration, and professional legal inquiries.";
+
+  return {
+    title,
+    description,
+    keywords: getSeoKeywords(locale),
+    alternates: {
+      canonical: absoluteUrl("/contact")
+    },
+    openGraph: {
+      title,
+      description,
+      url: absoluteUrl("/contact"),
+      images: [{ url: absoluteUrl(DEFAULT_OG_IMAGE), alt: "Contact Adv Shakil Ahmad" }]
+    }
+  };
+}
 
 export default async function ContactPage() {
   const locale = await getLocale();

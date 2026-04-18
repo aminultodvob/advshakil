@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import {
   BookOpen,
   BriefcaseBusiness,
@@ -11,9 +12,37 @@ import Image from "next/image";
 
 import { t } from "@/lib/i18n";
 import { getLocale } from "@/lib/i18n-server";
+import { absoluteUrl, DEFAULT_OG_IMAGE, getSeoKeywords } from "@/lib/seo";
 import { SiteShell } from "@/components/site/site-shell";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { MotionDiv } from "@/components/site/motion";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const title =
+    locale === "bn"
+      ? "পরিচিতি | অ্যাডভোকেট সাকিল আহমাদ"
+      : "About Adv Shakil Ahmad | Supreme Court Lawyer & NCP Leader";
+  const description =
+    locale === "bn"
+      ? "অ্যাডভোকেট সাকিল আহমাদের শিক্ষা, সুপ্রিম কোর্টে আইনচর্চা, জনস্বার্থে কাজ, জুলাই আন্দোলনে আইনগত সহায়তা এবং জাতীয় নাগরিক পার্টিতে নেতৃত্বের বিস্তারিত পরিচিতি।"
+      : "Learn about Adv Shakil Ahmad's education, Bangladesh Supreme Court legal practice, public-interest legal service, July movement legal support, and National Citizen Party leadership role.";
+
+  return {
+    title,
+    description,
+    keywords: getSeoKeywords(locale),
+    alternates: {
+      canonical: absoluteUrl("/about")
+    },
+    openGraph: {
+      title,
+      description,
+      url: absoluteUrl("/about"),
+      images: [{ url: absoluteUrl(DEFAULT_OG_IMAGE), alt: "Adv Shakil Ahmad" }]
+    }
+  };
+}
 
 export default async function AboutPage() {
   const locale = await getLocale();
