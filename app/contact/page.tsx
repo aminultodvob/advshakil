@@ -1,29 +1,49 @@
 import { CalendarDays, Mail, MapPin, Phone } from "lucide-react";
 
+import { t } from "@/lib/i18n";
+import { getLocale } from "@/lib/i18n-server";
 import { SiteShell } from "@/components/site/site-shell";
 import { ContactForm } from "@/components/site/contact-form";
 import { SectionHeading } from "@/components/ui/section-heading";
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const locale = await getLocale();
+
   return (
     <SiteShell>
       <section className="section-space">
         <div className="container-shell grid gap-10 lg:grid-cols-[0.88fr_1.12fr]">
           <div className="space-y-8">
             <SectionHeading
-              eyebrow="Contact"
-              title="Start a confidential conversation."
-              copy="For consultation requests, legal strategy discussions, or professional inquiries, use the contact form and expect a prompt response."
+              eyebrow={t(locale, "Contact", "যোগাযোগ")}
+              title={t(
+                locale,
+                "Start a confidential conversation.",
+                "গোপনীয় একটি আলাপ শুরু করুন।"
+              )}
+              copy={t(
+                locale,
+                "For consultation requests, legal strategy discussions, or professional inquiries, use the contact form and expect a prompt response.",
+                "পরামর্শ, আইনগত কৌশল বা পেশাগত অনুসন্ধানের জন্য যোগাযোগ ফর্ম ব্যবহার করুন। দ্রুত সাড়া দেওয়া হবে।"
+              )}
             />
             <div className="space-y-4">
               {[
-                { icon: Mail, label: "Email", value: "admin@shakilahmad.com" },
-                { icon: Phone, label: "Phone", value: "+880 1916-948710" },
-                { icon: MapPin, label: "Location", value: "Dhaka, Bangladesh" },
+                { icon: Mail, label: t(locale, "Email", "ইমেইল"), value: "admin@shakilahmad.com" },
+                { icon: Phone, label: t(locale, "Phone", "ফোন"), value: "+880 1916-948710" },
+                {
+                  icon: MapPin,
+                  label: t(locale, "Location", "অবস্থান"),
+                  value: t(locale, "Dhaka, Bangladesh", "ঢাকা, বাংলাদেশ")
+                },
                 {
                   icon: CalendarDays,
-                  label: "Consultation",
-                  value: "Private appointments available upon request"
+                  label: t(locale, "Consultation", "পরামর্শ"),
+                  value: t(
+                    locale,
+                    "Private appointments available upon request",
+                    "অনুরোধের ভিত্তিতে ব্যক্তিগত অ্যাপয়েন্টমেন্ট পাওয়া যাবে"
+                  )
                 }
               ].map((item) => (
                 <div key={item.label} className="glass-panel flex items-start gap-4 p-5">
@@ -34,7 +54,7 @@ export default function ContactPage() {
                     <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gold">
                       {item.label}
                     </p>
-                    <p className="mt-2 text-sm leading-7 text-ink/70">{item.value}</p>
+                    <p className="mt-2 text-sm leading-7 text-ink/70 dark:text-white/80">{item.value}</p>
                   </div>
                 </div>
               ))}

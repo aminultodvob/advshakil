@@ -4,6 +4,7 @@ import { Facebook, MessageCircleMore, Share2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/components/site/language-provider";
 
 export function BlogSocial({
   slug,
@@ -12,6 +13,7 @@ export function BlogSocial({
   slug: string;
   title: string;
 }) {
+  const { locale } = useLanguage();
   const [url, setUrl] = useState("");
   const [copied, setCopied] = useState(false);
 
@@ -52,20 +54,23 @@ export function BlogSocial({
       <div className="flex flex-col gap-6 border-b border-ink/8 pb-8 dark:border-white/10 lg:flex-row lg:items-end lg:justify-between">
         <div className="space-y-4">
           <p className="text-xs font-semibold uppercase tracking-[0.28em] text-gold">
-            Join the Conversation
+            {locale === "bn" ? "আলোচনায় অংশ নিন" : "Join the Conversation"}
           </p>
           <h2 className="font-serif text-3xl text-slate-900 dark:text-white">
-            Reader engagement and social sharing
+            {locale === "bn"
+              ? "পাঠকের প্রতিক্রিয়া ও সামাজিক শেয়ারিং"
+              : "Reader engagement and social sharing"}
           </h2>
           <p className="max-w-2xl text-base leading-8 text-slate-700 dark:text-white/80">
-            Readers can react, comment, and share this article directly through
-            Facebook in a format that feels familiar and professional.
+            {locale === "bn"
+              ? "পাঠকেরা ফেসবুকের মাধ্যমে এই লেখায় প্রতিক্রিয়া জানাতে, মন্তব্য করতে এবং শেয়ার করতে পারবেন একটি পেশাদার ও পরিচিত বিন্যাসে।"
+              : "Readers can react, comment, and share this article directly through Facebook in a format that feels familiar and professional."}
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
           <div className="rounded-full border border-ink/8 bg-mist px-4 py-2 dark:border-white/10 dark:bg-[#2a3a4d]">
             <iframe
-              title="Facebook like and share"
+              title={locale === "bn" ? "ফেসবুক লাইক ও শেয়ার" : "Facebook like and share"}
               src={likeSrc}
               width="220"
               height="28"
@@ -76,7 +81,13 @@ export function BlogSocial({
           </div>
           <Button type="button" variant="secondary" onClick={onShare}>
             <Share2 className="mr-2 h-4 w-4" />
-            {copied ? "Link Copied" : "Share Article"}
+            {copied
+              ? locale === "bn"
+                ? "লিংক কপি হয়েছে"
+                : "Link Copied"
+              : locale === "bn"
+                ? "আর্টিকেল শেয়ার করুন"
+                : "Share Article"}
           </Button>
         </div>
       </div>
@@ -89,18 +100,20 @@ export function BlogSocial({
             </div>
             <div>
               <p className="font-semibold text-slate-900 dark:text-white">
-                Facebook Engagement
+                {locale === "bn" ? "ফেসবুক সম্পৃক্ততা" : "Facebook Engagement"}
               </p>
               <p className="text-sm text-slate-600 dark:text-white/72">
-                Like, share, and respond below.
+                {locale === "bn"
+                  ? "নিচে লাইক, শেয়ার ও প্রতিক্রিয়া জানান।"
+                  : "Like, share, and respond below."}
               </p>
             </div>
           </div>
           <div className="mt-5 rounded-[22px] border border-ink/8 bg-white p-4 dark:border-white/10 dark:bg-[#233142]">
             <p className="text-sm leading-7 text-slate-700 dark:text-white/80">
-              Social proof and public interaction help extend the reach of a
-              well-written legal article while keeping discussion attached to a
-              trusted network.
+              {locale === "bn"
+                ? "সামাজিক গ্রহণযোগ্যতা ও জনসম্পৃক্ত আলোচনা একটি মানসম্মত আইনভিত্তিক লেখার পরিসর বাড়ায় এবং আলোচনাকে একটি বিশ্বস্ত নেটওয়ার্কের মধ্যে ধরে রাখে।"
+                : "Social proof and public interaction help extend the reach of a well-written legal article while keeping discussion attached to a trusted network."}
             </p>
           </div>
         </div>
@@ -112,16 +125,18 @@ export function BlogSocial({
             </div>
             <div>
               <p className="font-semibold text-slate-900 dark:text-white">
-                Facebook Comments
+                {locale === "bn" ? "ফেসবুক মন্তব্য" : "Facebook Comments"}
               </p>
               <p className="text-sm text-slate-600 dark:text-white/72">
-                Public discussion attached to this article
+                {locale === "bn"
+                  ? "এই আর্টিকেলের সঙ্গে সংযুক্ত জনআলোচনা"
+                  : "Public discussion attached to this article"}
               </p>
             </div>
           </div>
           <div className="overflow-hidden rounded-[24px] bg-white dark:bg-[#233142]">
             <iframe
-              title="Facebook comments"
+              title={locale === "bn" ? "ফেসবুক মন্তব্য" : "Facebook comments"}
               src={commentsSrc}
               className="min-h-[340px] w-full border-0"
               scrolling="no"

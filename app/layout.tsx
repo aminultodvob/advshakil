@@ -1,8 +1,16 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import {
+  Hind_Siliguri,
+  Inter,
+  Noto_Serif_Bengali,
+  Playfair_Display
+} from "next/font/google";
 
 import "@/app/globals.css";
 import { ThemeScript } from "@/components/theme/theme-script";
+import { WhatsAppWidget } from "@/components/site/whatsapp-widget";
+import { LanguageProvider } from "@/components/site/language-provider";
+import { getLocale } from "@/lib/i18n-server";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -12,6 +20,18 @@ const inter = Inter({
 const playfair = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-playfair"
+});
+
+const hindSiliguri = Hind_Siliguri({
+  subsets: ["bengali"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-hind-siliguri"
+});
+
+const notoSerifBengali = Noto_Serif_Bengali({
+  subsets: ["bengali"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-noto-serif-bengali"
 });
 
 export const metadata: Metadata = {
@@ -30,19 +50,23 @@ export const metadata: Metadata = {
   }
 };
 
-import { WhatsAppWidget } from "@/components/site/whatsapp-widget";
-
-export default function RootLayout({
+export default async function RootLayout({
   children
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} ${playfair.variable}`}>
+    <html lang={locale} data-locale={locale} suppressHydrationWarning>
+      <body
+        className={`${inter.variable} ${playfair.variable} ${hindSiliguri.variable} ${notoSerifBengali.variable}`}
+      >
         <ThemeScript />
-        {children}
-        <WhatsAppWidget />
+        <LanguageProvider initialLocale={locale}>
+          {children}
+          <WhatsAppWidget />
+        </LanguageProvider>
       </body>
     </html>
   );

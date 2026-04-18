@@ -2,12 +2,29 @@ import Image from "next/image";
 import Link from "next/link";
 import type { BlogPost } from "@prisma/client";
 
+import { type Locale } from "@/lib/i18n";
 import { formatDate, formatTime, getReadingTime } from "@/lib/utils";
 
-export function PostCard({ post, featured = false }: { post: BlogPost; featured?: boolean }) {
-  const publishLabel = post.publishedAt ? formatDate(post.publishedAt) : "Draft";
-  const publishTime = post.publishedAt ? formatTime(post.publishedAt) : "Unscheduled";
-  const readingTime = getReadingTime(post.content);
+export function PostCard({
+  post,
+  featured = false,
+  locale = "en"
+}: {
+  post: BlogPost;
+  featured?: boolean;
+  locale?: Locale;
+}) {
+  const publishLabel = post.publishedAt
+    ? formatDate(post.publishedAt, locale)
+    : locale === "bn"
+      ? "খসড়া"
+      : "Draft";
+  const publishTime = post.publishedAt
+    ? formatTime(post.publishedAt, locale)
+    : locale === "bn"
+      ? "নির্ধারিত নয়"
+      : "Unscheduled";
+  const readingTime = getReadingTime(post.content, locale);
 
   return (
     <article
@@ -43,7 +60,7 @@ export function PostCard({ post, featured = false }: { post: BlogPost; featured?
           href={`/blog/${post.slug}`}
           className="mt-8 text-sm font-semibold uppercase tracking-[0.2em] text-slate-900 transition hover:text-gold dark:text-white"
         >
-          Read Article
+          {locale === "bn" ? "আরও পড়ুন" : "Read Article"}
         </Link>
       </div>
     </article>

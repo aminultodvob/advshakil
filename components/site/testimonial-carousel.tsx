@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 
+import { useLanguage } from "@/components/site/language-provider";
+
 type Testimonial = {
   id: string;
   name: string;
@@ -15,6 +17,7 @@ export function TestimonialCarousel({
 }: {
   testimonials: Testimonial[];
 }) {
+  const { locale } = useLanguage();
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
@@ -57,7 +60,11 @@ export function TestimonialCarousel({
               className={`h-2.5 rounded-full transition-all ${
                 dotIndex === index ? "w-8 bg-gold" : "w-2.5 bg-ink/20"
               }`}
-              aria-label={`Go to testimonial ${dotIndex + 1}`}
+              aria-label={
+                locale === "bn"
+                  ? `প্রশংসাপত্র ${dotIndex + 1} এ যান`
+                  : `Go to testimonial ${dotIndex + 1}`
+              }
             />
           ))}
         </div>

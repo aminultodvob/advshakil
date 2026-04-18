@@ -1,7 +1,11 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Clock3, CalendarDays, FileText, RefreshCw } from "lucide-react";
+
 import { prisma } from "@/lib/prisma";
+import { localizeBlogPost } from "@/lib/content-localization";
+import { t } from "@/lib/i18n";
+import { getLocale } from "@/lib/i18n-server";
 import {
   formatDate,
   formatDateTime,
@@ -16,6 +20,7 @@ export default async function BlogDetailPage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
+  const locale = await getLocale();
   const { slug } = await params;
   const post = await prisma.blogPost.findFirst({
     where: {
@@ -28,31 +33,32 @@ export default async function BlogDetailPage({
     notFound();
   }
 
-  const publishedDate = post.publishedAt ?? post.createdAt;
-  const readingTime = getReadingTime(post.content);
+  const localizedPost = localizeBlogPost(post, locale);
+  const publishedDate = localizedPost.publishedAt ?? localizedPost.createdAt;
+  const readingTime = getReadingTime(localizedPost.content, locale);
   const articleMeta = [
     {
-      label: "Published",
-      value: formatDate(publishedDate),
-      detail: formatTime(publishedDate),
+      label: t(locale, "Published", "প্রকাশিত"),
+      value: formatDate(publishedDate, locale),
+      detail: formatTime(publishedDate, locale),
       icon: CalendarDays
     },
     {
-      label: "Reading time",
+      label: t(locale, "Reading time", "পড়ার সময়"),
       value: readingTime,
-      detail: "Editorial estimate",
+      detail: t(locale, "Editorial estimate", "সম্পাদনাগত হিসাব"),
       icon: Clock3
     },
     {
-      label: "Format",
-      value: "Legal insight",
-      detail: "Professional commentary",
+      label: t(locale, "Format", "ধরণ"),
+      value: t(locale, "Legal insight", "আইনগত অন্তর্দৃষ্টি"),
+      detail: t(locale, "Professional commentary", "পেশাদার বিশ্লেষণ"),
       icon: FileText
     },
     {
-      label: "Updated",
-      value: formatDate(post.updatedAt),
-      detail: formatTime(post.updatedAt),
+      label: t(locale, "Updated", "সর্বশেষ হালনাগাদ"),
+      value: formatDate(localizedPost.updatedAt, locale),
+      detail: formatTime(localizedPost.updatedAt, locale),
       icon: RefreshCw
     }
   ];
@@ -63,17 +69,17 @@ export default async function BlogDetailPage({
         <div className="container-shell max-w-5xl">
           <div className="rounded-[40px] border border-white/70 bg-white/90 p-8 shadow-card backdrop-blur-xl dark:border-white/10 dark:bg-[rgb(var(--surface-soft))/0.92] sm:p-10">
             <div className="space-y-6 text-center">
-              <span className="eyebrow">Published Insight</span>
+              <span className="eyebrow">{t(locale, "Published Insight", "প্রকাশিত অন্তর্দৃষ্টি")}</span>
               <div className="space-y-4">
                 <p className="text-sm uppercase tracking-[0.3em] text-gold">
-                  {formatDateTime(publishedDate)}
+                  {formatDateTime(publishedDate, locale)}
                 </p>
                 <h1 className="font-serif text-5xl leading-tight text-slate-900 dark:text-white sm:text-6xl">
-                  {post.title}
+                  {localizedPost.title}
                 </h1>
               </div>
               <p className="mx-auto max-w-3xl text-lg leading-8 text-copy">
-                {post.excerpt}
+                {localizedPost.excerpt}
               </p>
             </div>
 
@@ -107,8 +113,8 @@ export default async function BlogDetailPage({
           </div>
           <div className="relative mt-12 h-[360px] overflow-hidden rounded-[36px] shadow-card">
             <Image
-              src={post.coverImage}
-              alt={post.title}
+              src={localizedPost.coverImage}
+              alt={localizedPost.title}
               fill
               className="object-cover"
             />
@@ -116,9 +122,9 @@ export default async function BlogDetailPage({
           </div>
           <article
             className="prose-content mt-12 rounded-[36px] border border-white/70 bg-white p-8 shadow-card sm:p-12 dark:border-white/10 dark:bg-[rgb(var(--surface-soft))]"
-            dangerouslySetInnerHTML={{ __html: post.content }}
+            dangerouslySetInnerHTML={{ __html: localizedPost.content }}
           />
-          <BlogSocial slug={post.slug} title={post.title} />
+          <BlogSocial slug={localizedPost.slug} title={localizedPost.title} />
         </div>
       </section>
     </SiteShell>
