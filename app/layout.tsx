@@ -116,15 +116,6 @@ export default async function RootLayout({
         className={`${inter.variable} ${playfair.variable} ${hindSiliguri.variable} ${notoSerifBengali.variable}`}
       >
         <Script
-          id="consent-manager"
-          src="https://cdn.consentmanager.net/delivery/autoblocking/58b7178b32e84.js"
-          strategy="beforeInteractive"
-          data-cmp-ab="1"
-          data-cmp-host="d.delivery.consentmanager.net"
-          data-cmp-cdn="cdn.consentmanager.net"
-          data-cmp-codesrc="16"
-        />
-        <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-B8ZEVTFYGD"
           strategy="afterInteractive"
         />
